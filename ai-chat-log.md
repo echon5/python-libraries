@@ -29,23 +29,17 @@
 **My prompts:** "i type that in th eterminal or vscode", "i pasted no output when i try to run", "says 0", "cd ~/Desktop/IS310 open -a "Visual Studio Code" cli_data_entry.py this did nothing", "i opened folder and cli data entry has same code", "now says 107"
 **Claude's response:** Explained that the code goes in VS Code and only the run command goes in the terminal. Helped me find out the saved file was empty (`wc -l` showing 0), then reopen the folder, paste, save, and check again.
 
-## Changing the topic
-
 **My prompt:** "can you write the CLI"
 **Claude's response:** Wrote the whole script for songs.
 
 **My prompt:** "keeps showing old one not fairtail"
 **Claude's response:** Explained the old code was still saved in the file and walked me through selecting all, pasting, saving, and checking with `grep -c "fairy"`.
 
-## HTML version
-
 **My prompt:** "ok i added a stoey and the now works"
 **Claude's response:** Wrote `fairy_tale_entry.html` with the same four fields, required-field validation, a review step, a records table, and a Download JSON button.
 
 **My prompts:** "wait can i save first", "no save the stories i added", "ok i saved html and moved into vs", "html worked"
 **Claude's response:** Explained that the CLI saves its JSON file automatically, that running the script again overwrites it (so make a backup copy), and that the HTML version needs the Download JSON button.
-
-## README and requirements.txt
 
 **My prompts:** "i said u helped me with finding my file when lost on desktop and suplemental coding".
 **Claude's response:** Drafted the README.
