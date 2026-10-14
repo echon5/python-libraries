@@ -1,0 +1,20 @@
+[
+    {
+        "title": "Cinderella",
+        "origin": "France (Charles Perrault's version)",
+        "first_published_year": 1697,
+        "cultural_note": "Versions of this story appear across many cultures, usually about kindness being rewarded."
+    },
+    {
+        "title": "Hansel and Gretel",
+        "origin": "Germany (Brothers Grimm)",
+        "first_published_year": 1812,
+        "cultural_note": "Reflects fears of famine and abandonment, with children outwitting a threatening adult."
+    },
+    {
+        "title": "Sleeping Beauty",
+        "origin": "France (Charles Perault)",
+        "first_published_year": 1697,
+        "cultural_note": "Serves as a mirror to reflect societal morals and gender roles."
+    }
+]

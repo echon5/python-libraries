@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curated Fairy Tales</title>
+<style>
+  :root {
+    --bg: #f6f4fa;
+    --surface: #ffffff;
+    --ink: #231a33;
+    --muted: #5d5470;
+    --line: #d9d3e6;
+    --accent: #1d6b5f;
+    --accent-ink: #ffffff;
+    --error: #b3261e;
+    --focus: #6b3fd4;
+  }
+  * { box-sizing: border-box; }
+  html { color-scheme: light; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    line-height: 1.55;
+  }
+  main { max-width: 52rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  h1 { font-size: 2.2rem; line-height: 1.15; margin: 0 0 .5rem; }
+  h2 { font-size: 1.3rem; margin: 2.5rem 0 .75rem; }
+  p.lede { color: var(--muted); max-width: 40rem; margin: 0; }
+  section { margin-top: 1rem; }
+  .table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+  table { border-collapse: collapse; width: 100%; min-width: 36rem; }
+  th, td { text-align: left; padding: .6rem .8rem; border-bottom: 1px solid var(--line); vertical-align: top; font-size: .95rem; }
+  th { font-weight: 700; background: #efebf7; }
+  tr:last-child td { border-bottom: none; }
+  form { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1.25rem; display: grid; gap: 1rem; }
+  label { display: block; font-weight: 700; margin-bottom: .25rem; }
+  .hint { display: block; font-weight: 400; color: var(--muted); font-size: .88rem; }
+  input, textarea {
+    width: 100%; font: inherit; color: var(--ink);
+    padding: .55rem .65rem; border: 1px solid #8f86a3; border-radius: 4px; background: #fff;
+  }
+  textarea { min-height: 5rem; resize: vertical; }
+  input:focus-visible, textarea:focus-visible, button:focus-visible {
+    outline: 3px solid var(--focus); outline-offset: 2px;
+  }
+  .error { color: var(--error); font-size: .9rem; min-height: 1.2em; margin: .2rem 0 0; }
+  input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--error); }
+  .actions { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+  button {
+    font: inherit; font-weight: 700; cursor: pointer;
+    padding: .6rem 1.1rem; border-radius: 4px; border: 2px solid var(--accent);
+    background: var(--accent); color: var(--accent-ink);
+  }
+  button.secondary { background: transparent; color: var(--accent); }
+  button:hover { filter: brightness(1.1); }
+  #review { background: #eaf4f1; border: 2px solid var(--accent); border-radius: 6px; padding: 1.25rem; margin-top: 1rem; }
+  #review h2 { margin-top: 0; }
+  #review dl { display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1rem; margin: 0 0 1rem; }
+  #review dt { font-weight: 700; }
+  #review dd { margin: 0; }
+  .status { color: var(--muted); margin: .5rem 0 1rem; }
+  [hidden] { display: none !important; }
+  @media (max-width: 30rem) { #review dl { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Curated Fairy Tales</h1>
+  <p class="lede">Add fairy tales to a small dataset, review each entry, and download the result as a JSON file. This is the same workflow as the terminal version.</p>
+
+  <h2>Current records</h2>
+  <p class="status" id="count" role="status"></p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th scope="col">Title</th><th scope="col">Origin</th><th scope="col">First published</th><th scope="col">Cultural note</th></tr>
+      </thead>
+      <tbody id="records"></tbody>
+    </table>
+  </div>
+  <div class="actions" style="margin-top:1rem">
+    <button type="button" id="download">Download JSON</button>
+  </div>
+
+  <h2>Add a fairy tale</h2>
+  <form id="tale-form" novalidate>
+    <div>
+      <label for="title">Fairy tale title</label>
+      <input id="title" name="title" type="text" autocomplete="off" aria-describedby="title-error" required>
+      <p class="error" id="title-error"></p>
+    </div>
+    <div>
+      <label for="origin">Culture or country of origin <span class="hint">Add the collector or author if you know it.</span></label>
+      <input id="origin" name="origin" type="text" autocomplete="off" aria-describedby="origin-error" required>
+      <p class="error" id="origin-error"></p>
+    </div>
+    <div>
+      <label for="year">Year first published or written down</label>
+      <input id="year" name="year" type="text" inputmode="numeric" autocomplete="off" aria-describedby="year-error" required>
+      <p class="error" id="year-error"></p>
+    </div>
+    <div>
+      <label for="note">What does this tale show about its culture?</label>
+      <textarea id="note" name="note" aria-describedby="note-error" required></textarea>
+      <p class="error" id="note-error"></p>
+    </div>
+    <div class="actions">
+      <button type="submit">Review entry</button>
+    </div>
+  </form>
+
+  <section id="review" hidden aria-live="polite">
+    <h2>Please review your entry</h2>
+    <dl id="review-list"></dl>
+    <div class="actions">
+      <button type="button" id="confirm">Yes, add it</button>
+      <button type="button" class="secondary" id="edit">No, edit it</button>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Example records, matching the terminal version.
+  const tales = [
+    {
+      title: "Cinderella",
+      origin: "France (Charles Perrault's version)",
+      first_published_year: 1697,
+      cultural_note: "Versions of this story appear across many cultures, usually about kindness being rewarded."
+    },
+    {
+      title: "Hansel and Gretel",
+      origin: "Germany (Brothers Grimm)",
+      first_published_year: 1812,
+      cultural_note: "Reflects fears of famine and abandonment, with children outwitting a threatening adult."
+    }
+  ];
+  let pending = null;
+
+  const form = document.getElementById("tale-form");
+  const review = document.getElementById("review");
+  const reviewList = document.getElementById("review-list");
+  const fields = ["title", "origin", "year", "note"];
+
+  function renderRecords() {
+    const body = document.getElementById("records");
+    body.replaceChildren();
+    tales.forEach(function (tale) {
+      const row = document.createElement("tr");
+      [tale.title, tale.origin, String(tale.first_published_year), tale.cultural_note].forEach(function (text) {
+        const cell = document.createElement("td");
+        cell.textContent = text;
+        row.appendChild(cell);
+      });
+      body.appendChild(row);
+    });
+    const added = tales.length - 2;
+    document.getElementById("count").textContent =
+      tales.length + " records total (" + added + " added by you).";
+  }
+
+  function setError(id, message) {
+    document.getElementById(id + "-error").textContent = message;
+    document.getElementById(id).setAttribute("aria-invalid", message ? "true" : "false");
+  }
+
+  function validate() {
+    let valid = true;
+    let firstBad = null;
+    const values = {};
+    fields.forEach(function (id) { values[id] = document.getElementById(id).value.trim(); });
+
+    const labels = {
+      title: "Enter a fairy tale title.",
+      origin: "Enter a culture or country of origin.",
+      year: "Enter the year first published.",
+      note: "Describe what this tale shows about its culture."
+    };
+    fields.forEach(function (id) {
+      let message = "";
+      if (!values[id]) {
+        message = labels[id];
+      } else if (id === "year") {
+        const n = Number(values.year);
+        if (!/^\d+$/.test(values.year) || n < 1 || n > 2100) {
+          message = "Use digits for the year, like 1812.";
+        }
+      }
+      setError(id, message);
+      if (message) {
+        valid = false;
+        if (!firstBad) firstBad = id;
+      }
+    });
+    if (firstBad) document.getElementById(firstBad).focus();
+    return valid ? values : null;
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const values = validate();
+    if (!values) return;
+    pending = {
+      title: values.title,
+      origin: values.origin,
+      first_published_year: Number(values.year),
+      cultural_note: values.note
+    };
+    reviewList.replaceChildren();
+    [
+      ["Title", pending.title],
+      ["Origin", pending.origin],
+      ["First published", String(pending.first_published_year)],
+      ["Cultural note", pending.cultural_note]
+    ].forEach(function (pair) {
+      const dt = document.createElement("dt");
+      const dd = document.createElement("dd");
+      dt.textContent = pair[0];
+      dd.textContent = pair[1];
+      reviewList.append(dt, dd);
+    });
+    review.hidden = false;
+    review.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  document.getElementById("confirm").addEventListener("click", function () {
+    if (!pending) return;
+    tales.push(pending);
+    pending = null;
+    review.hidden = true;
+    form.reset();
+    fields.forEach(function (id) { setError(id, ""); });
+    renderRecords();
+    document.getElementById("title").focus();
+  });
+
+  document.getElementById("edit").addEventListener("click", function () {
+    review.hidden = true;
+    pending = null;
+    document.getElementById("title").focus();
+  });
+
+  document.getElementById("download").addEventListener("click", function () {
+    const blob = new Blob([JSON.stringify(tales, null, 4)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "curated_fairy_tales_html.json";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  renderRecords();
+</script>
+</body>
+</html>
