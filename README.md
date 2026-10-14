@@ -1,6 +1,6 @@
 # Curated Fairy Tales: CLI and HTML Data Entry
 
-This project collects a small, curated dataset of fairy tales in two ways: a Python command-line app and a single-page HTML form. Both collect the same four fields and save the results as JSON.
+This project collects a small, curated dataset of fairy tales in two ways: a Python command-line app and a single-page HTML form. 
 
 ## What it collects
 
@@ -57,17 +57,16 @@ Records in the HTML version are not saved automatically, so download the file be
 ## Comparing the two interfaces
 
 **What does each interface make easier or harder?**
-
-*(Write your answer here. Think about typing in a terminal versus filling in a form, seeing records, fixing mistakes, and saving the file.)*
+The CLI allows for user customization since they are able to type their responses in, this could make responding less acessible for users that can't type. The HTML also has same issue with typing but you can click the yes or not buttons inseatd of the CLI where you have to type it.
 
 **Did the interfaces lead you to make different choices about fields, instructions, or validation?**
 
-*(Write your answer here. Compare how each version handles blank fields, the year check, instructions, and the review step.)*
+The CLI has each step with instruction set out chronologically whereas the HTML has all the text boxes set in front of the user at once. The CLI offers better guidance but both that requirements for the the type of responses needed. The HTML also has buttons for yes and no whereas the CLI makes you type it.
 
 **What did the AI contribute, and what did you change, reject, or troubleshoot?**
 
-*(Write your answer here. Be specific: what Claude wrote, what you tested, what went wrong, and what you changed or chose, such as switching the topic from songs to fairy tales.)*
+Claude came up with the code for the CLI but started with the theme of songs, it also helped with the read me formatting, and made the html. It also helped troubleshooted with file locations. I changed it to match with my teams theme and tested and trouble shooted. I also added stories and tested all of the instructions and validations. I wrote all the responses on my own.
 
 **Which interface better fits your cultural material and intended user, and why?**
 
-*(Write your answer here. Consider who would enter fairy tale data and which interface suits them.)*
+I think that both younger and olderfolk would be inputting story data so i think the HTML is much easier to naviagte instead of typing in the terminal. It also looks nicers which could help with the user experience. There is also guidance with instructions like the CLI its just not step by step.
